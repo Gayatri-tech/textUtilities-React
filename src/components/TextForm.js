@@ -2,13 +2,9 @@ import React, { useState } from "react";
 
 export default function TextForm(props) {
   const [text, setText] = useState("");
-  const [undoStack, setUndoStack] = useState("[]");
-  const [redoStack, setRedoStack] = useState("[]");
 
   const handleOnChange = (event) => {
     let newText = event.target.value;
-    setUndoStack([...undoStack, text]);
-    setRedoStack([]);
     setText(newText);
   };
 
@@ -43,21 +39,6 @@ export default function TextForm(props) {
     }
     let newText = sentence.join(". ");
     setText(newText);
-  };
-
-  const handleUndoClick = () => {
-    if (undoStack.length > 0) {
-      const newText = redoStack.pop();
-      undoStack.push(text);
-      setText(newText);
-    }
-  };
-  const handleRedoClick = () => {
-    if (redoStack.length > 0) {
-      const newText = undoStack.pop();
-      redoStack.push(text);
-      setText(newText);
-    }
   };
 
   return (
@@ -96,12 +77,6 @@ export default function TextForm(props) {
           onClick={handleSentenceClick}
         >
           Sentence case
-        </button>
-        <button className="btn btn-primary mx-1 my-1" onClick={handleUndoClick}>
-          Undo
-        </button>
-        <button className="btn btn-primary mx-1 my-1" onClick={handleRedoClick}>
-          Redo
         </button>
         <button
           className="btn btn-primary mx-1 my-1"
