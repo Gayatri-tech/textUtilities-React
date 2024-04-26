@@ -11,16 +11,19 @@ export default function TextForm(props) {
   const handleUpperClick = () => {
     let newText = text.toUpperCase();
     setText(newText);
+    props.showAlert("Converted to UPPERCASE", "success");
   };
 
   const handleLowerClick = () => {
     let newText = text.toLowerCase();
     setText(newText);
+    props.showAlert("Converted to lowercase", "success");
   };
 
   const handleClearClick = () => {
     let newText = "";
     setText(newText);
+    props.showAlert("Textarea cleared", "success");
   };
 
   const handleTitleClick = () => {
@@ -30,6 +33,7 @@ export default function TextForm(props) {
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
     setText(newText);
+    props.showAlert("Converted to Title Case", "success");
   };
 
   const handleSentenceClick = () => {
@@ -39,6 +43,7 @@ export default function TextForm(props) {
     }
     let newText = sentence.join(". ");
     setText(newText);
+    props.showAlert("Converted to Sentence case", "success");
   };
 
   return (
