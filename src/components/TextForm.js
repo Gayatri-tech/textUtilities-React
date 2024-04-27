@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 export default function TextForm(props) {
+  const { mode } = props;
   const [text, setText] = useState("");
 
   const handleOnChange = (event) => {
@@ -8,87 +9,85 @@ export default function TextForm(props) {
     setText(newText);
   };
 
-  const handleUpperClick = () => {
-    let newText = text.toUpperCase();
+  const handleCaseConversion = (conversionFunction, alertMessage) => {
+    let newText = conversionFunction(text);
     setText(newText);
-    props.showAlert("Converted to UPPERCASE", "success");
-  };
-
-  const handleLowerClick = () => {
-    let newText = text.toLowerCase();
-    setText(newText);
-    props.showAlert("Converted to lowercase", "success");
+    props.showAlert(alertMessage, "success");
   };
 
   const handleClearClick = () => {
-    let newText = "";
-    setText(newText);
+    setText("");
     props.showAlert("Textarea cleared", "success");
   };
 
-  const handleTitleClick = () => {
-    let newText = text
+  const toUpperCase = (str) => str.toUpperCase();
+  const toLowerCase = (str) => str.toLowerCase();
+  const toTitleCase = (str) =>
+    str
       .toLowerCase()
       .split(" ")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
-    setText(newText);
-    props.showAlert("Converted to Title Case", "success");
-  };
-
-  const handleSentenceClick = () => {
-    let sentence = text.toLowerCase().split(". ");
-    for (let i = 0; i < sentence.length; i++) {
-      sentence[i] = sentence[i][0].toUpperCase() + sentence[i].slice(1);
-    }
-    let newText = sentence.join(". ");
-    setText(newText);
-    props.showAlert("Converted to Sentence case", "success");
-  };
+  const toSentenceCase = (str) =>
+    str
+      .toLowerCase()
+      .split(". ")
+      .map((sentence) => sentence.charAt(0).toUpperCase() + sentence.slice(1))
+      .join(". ");
 
   return (
     <>
-      <div
-        className="container"
-        style={{
-          color: props.mode === "light" ? "#000814" : "white",
-        }}
-      >
+      <div className="container">
         <h1>{props.heading}</h1>
         <div className="mb-3">
           <textarea
             className="form-control"
+            style={{
+              backgroundColor:
+                mode === "dark"
+                  ? "#000814"
+                  : mode === "green"
+                  ? "#132a13"
+                  : mode === "purple"
+                  ? "#3c1642"
+                  : "white",
+              color: mode === "light" ? "#000814" : "white",
+            }}
             id="myBox"
             rows="8"
             value={text}
             onChange={handleOnChange}
-            style={{
-              backgroundColor: props.mode === "light" ? "white" : "#000814",
-              color: props.mode === "light" ? "#000814" : "white",
-            }}
           ></textarea>
         </div>
         <button
           className="btn btn-primary mx-1 my-1"
-          onClick={handleUpperClick}
+          onClick={() =>
+            handleCaseConversion(toUpperCase, "Converted to UPPERCASE")
+          }
         >
           UPPERCASE
         </button>
         <button
           className="btn btn-primary mx-1 my-1"
-          onClick={handleLowerClick}
+          onClick={() =>
+            handleCaseConversion(toLowerCase, "Converted to lowercase")
+          }
         >
           lowercase
         </button>
         <button
           className="btn btn-primary mx-1 my-1"
-          onClick={handleTitleClick}
+          onClick={() =>
+            handleCaseConversion(toTitleCase, "Converted to Title Case")
+          }
         >
           Title Case
         </button>
         <button
           className="btn btn-primary mx-1 my-1"
-          onClick={handleSentenceClick}
+          onClick={() =>
+            handleCaseConversion(toSentenceCase, "Converted to Sentence case")
+          }
         >
           Sentence case
         </button>
@@ -99,12 +98,7 @@ export default function TextForm(props) {
           Clear
         </button>
       </div>
-      <div
-        className="container my-3"
-        style={{
-          color: props.mode === "light" ? "#000814" : "white",
-        }}
-      >
+      <div className="container my-3">
         <h2>Your text summary</h2>
         <p>
           {text.split(" ").length} words, {text.length} characters
