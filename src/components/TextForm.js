@@ -19,6 +19,13 @@ export default function TextForm(props) {
     setText("");
     props.showAlert("Textarea cleared", "success");
   };
+  const handleCopy = () => {
+    let text = document.getElementById("myBox");
+    text.select();
+    navigator.clipboard.writeText(text.value);
+    document.getSelection().removeAllRanges();
+    props.showAlert("Copied to Clipboard!", "success");
+  };
 
   const toUpperCase = (str) => str.toUpperCase();
   const toLowerCase = (str) => str.toLowerCase();
@@ -45,11 +52,11 @@ export default function TextForm(props) {
             style={{
               backgroundColor:
                 mode === "dark"
-                  ? "#000814"
+                  ? "#001f38"
                   : mode === "green"
-                  ? "#132a13"
+                  ? "#284e28"
                   : mode === "purple"
-                  ? "#3c1642"
+                  ? "#4a2354"
                   : "white",
               color: mode === "light" ? "#000814" : "white",
             }}
@@ -60,6 +67,7 @@ export default function TextForm(props) {
           ></textarea>
         </div>
         <button
+          disabled={text.length === 0}
           className="btn btn-primary mx-1 my-1"
           onClick={() =>
             handleCaseConversion(toUpperCase, "Converted to UPPERCASE")
@@ -68,6 +76,7 @@ export default function TextForm(props) {
           UPPERCASE
         </button>
         <button
+          disabled={text.length === 0}
           className="btn btn-primary mx-1 my-1"
           onClick={() =>
             handleCaseConversion(toLowerCase, "Converted to lowercase")
@@ -76,6 +85,7 @@ export default function TextForm(props) {
           lowercase
         </button>
         <button
+          disabled={text.length === 0}
           className="btn btn-primary mx-1 my-1"
           onClick={() =>
             handleCaseConversion(toTitleCase, "Converted to Title Case")
@@ -84,6 +94,7 @@ export default function TextForm(props) {
           Title Case
         </button>
         <button
+          disabled={text.length === 0}
           className="btn btn-primary mx-1 my-1"
           onClick={() =>
             handleCaseConversion(toSentenceCase, "Converted to Sentence case")
@@ -92,22 +103,39 @@ export default function TextForm(props) {
           Sentence case
         </button>
         <button
+          disabled={text.length === 0}
           className="btn btn-primary mx-1 my-1"
           onClick={handleClearClick}
         >
           Clear
         </button>
+        <button
+          disabled={text.length === 0}
+          className="btn btn-primary mx-1 my-1"
+          onClick={handleCopy}
+        >
+          Copy text
+        </button>
       </div>
       <div className="container my-3">
         <h2>Your text summary</h2>
         <p>
-          {text.split(" ").length} words, {text.length} characters
+          {
+            text.split(" ").filter((element) => {
+              return element.length !== 0;
+            }).length
+          }{" "}
+          words, {text.length} characters
         </p>
-        <p>{0.008 * text.split(" ").length} minutes read</p>
-        <h2>Preview</h2>
         <p>
-          {text.length > 0 ? text : "Enter your text above to preview it here"}
+          {0.008 *
+            text.split(" ").filter((element) => {
+              return element.length !== 0;
+            }).length}{" "}
+          minutes read
         </p>
+        <h2>Preview</h2>
+        <p>{text.length > 0 ? text : "Nothing to preview"}</p>
       </div>
     </>
   );

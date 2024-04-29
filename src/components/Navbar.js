@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function Navbar(props) {
   const { mode, toggleMode } = props;
 
@@ -9,9 +11,9 @@ export default function Navbar(props) {
         }`}
       >
         <div className="container-fluid">
-          <a className="navbar-brand" href="/">
+          <Link to="/" className="navbar-brand">
             {props.title}
-          </a>
+          </Link>
           <button
             className="navbar-toggler"
             type="button"
@@ -26,14 +28,14 @@ export default function Navbar(props) {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <a className="nav-link active" href="/" aria-current="page">
+                <Link to="/" className="nav-link">
                   Home
-                </a>
+                </Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="/">
+                <Link to="/about" className="nav-link">
                   {props.aboutText}
-                </a>
+                </Link>
               </li>
             </ul>
             <div className="form-check mx-2 green form-switch">
@@ -43,7 +45,7 @@ export default function Navbar(props) {
                 role="switch"
                 id="darkModeSwitch"
                 checked={mode === "dark"}
-                onClick={() => toggleMode("dark")}
+                onChange={() => toggleMode("dark")}
               />
               <label className="form-check-label" htmlFor="darkModeSwitch">
                 Dark
@@ -56,7 +58,7 @@ export default function Navbar(props) {
                 role="switch"
                 id="greenModeSwitch"
                 checked={mode === "green"}
-                onClick={() => toggleMode("green")}
+                onChange={() => toggleMode("green")}
               />
               <label className="form-check-label" htmlFor="greenModeSwitch">
                 Green
@@ -69,7 +71,7 @@ export default function Navbar(props) {
                 role="switch"
                 id="purpleModeSwitch"
                 checked={mode === "purple"}
-                onClick={() => toggleMode("purple")}
+                onChange={() => toggleMode("purple")}
               />
               <label className="form-check-label" htmlFor="purpleModeSwitch">
                 Purple
