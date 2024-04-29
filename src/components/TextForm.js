@@ -15,16 +15,20 @@ export default function TextForm(props) {
     props.showAlert(alertMessage, "success");
   };
 
+  const handleCopy = () => {
+    navigator.clipboard.writeText(text);
+    props.showAlert("Copied to Clipboard!", "success");
+  };
+
+  const handleExtraSpaces = () => {
+    let newText = text.split(/[ ]+/);
+    setText(newText.join(" "));
+    props.showAlert("Extra spaces removed!", "success");
+  };
+
   const handleClearClick = () => {
     setText("");
-    props.showAlert("Textarea cleared", "success");
-  };
-  const handleCopy = () => {
-    let text = document.getElementById("myBox");
-    text.select();
-    navigator.clipboard.writeText(text.value);
-    document.getSelection().removeAllRanges();
-    props.showAlert("Copied to Clipboard!", "success");
+    props.showAlert("Textarea cleared!", "success");
   };
 
   const toUpperCase = (str) => str.toUpperCase();
@@ -35,6 +39,7 @@ export default function TextForm(props) {
       .split(" ")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
+
   const toSentenceCase = (str) =>
     str
       .toLowerCase()
@@ -70,7 +75,7 @@ export default function TextForm(props) {
           disabled={text.length === 0}
           className="btn btn-primary mx-1 my-1"
           onClick={() =>
-            handleCaseConversion(toUpperCase, "Converted to UPPERCASE")
+            handleCaseConversion(toUpperCase, "Converted to UPPERCASE!")
           }
         >
           UPPERCASE
@@ -79,7 +84,7 @@ export default function TextForm(props) {
           disabled={text.length === 0}
           className="btn btn-primary mx-1 my-1"
           onClick={() =>
-            handleCaseConversion(toLowerCase, "Converted to lowercase")
+            handleCaseConversion(toLowerCase, "Converted to lowercase!")
           }
         >
           lowercase
@@ -88,7 +93,7 @@ export default function TextForm(props) {
           disabled={text.length === 0}
           className="btn btn-primary mx-1 my-1"
           onClick={() =>
-            handleCaseConversion(toTitleCase, "Converted to Title Case")
+            handleCaseConversion(toTitleCase, "Converted to Title Case!")
           }
         >
           Title Case
@@ -97,11 +102,28 @@ export default function TextForm(props) {
           disabled={text.length === 0}
           className="btn btn-primary mx-1 my-1"
           onClick={() =>
-            handleCaseConversion(toSentenceCase, "Converted to Sentence case")
+            handleCaseConversion(toSentenceCase, "Converted to Sentence case!")
           }
         >
           Sentence case
         </button>
+
+        <button
+          disabled={text.length === 0}
+          className="btn btn-primary mx-1 my-1"
+          onClick={handleCopy}
+        >
+          Copy Text
+        </button>
+
+        <button
+          disabled={text.length === 0}
+          className="btn btn-primary mx-1 my-1"
+          onClick={handleExtraSpaces}
+        >
+          Remove Extra Spaces
+        </button>
+
         <button
           disabled={text.length === 0}
           className="btn btn-primary mx-1 my-1"
@@ -109,19 +131,12 @@ export default function TextForm(props) {
         >
           Clear
         </button>
-        <button
-          disabled={text.length === 0}
-          className="btn btn-primary mx-1 my-1"
-          onClick={handleCopy}
-        >
-          Copy text
-        </button>
       </div>
       <div className="container my-3">
         <h2>Your text summary</h2>
         <p>
           {
-            text.split(" ").filter((element) => {
+            text.split(/\s+/).filter((element) => {
               return element.length !== 0;
             }).length
           }{" "}
